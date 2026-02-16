@@ -1,0 +1,193 @@
+﻿@page "/movies/now-playing"
+@using Microsoft.AspNetCore.Components.Authorization
+@using blog_keycloak_series.Domain.Model
+@using blog_keycloak_series.Domain.Model.Api
+@using System.Text.Json
+@attribute [Authorize]
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 300)]
+
+@inject MoviesApiClient MoviesApi
+
+<PageTitle>Now Playing Movies</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h1 class="display-4">🎬 Now Playing Movies</h1>
+                    <p class="lead">Check out the movies currently showing in theaters.</p>
+                </div>
+            </div>
+
+            @if (isLoading)
+            {
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading now playing movies...</p>
+                </div>
+            }
+            else if (errorMessage != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>@errorMessage</p>
+                    <hr>
+                    <button class="btn btn-outline-danger" @onclick="LoadMovies">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            }
+            else if (movies?.Any() == true)
+            {
+                <div class="row">
+                    @foreach (var movie in movies)
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                @if (!string.IsNullOrEmpty(movie.PosterPath))
+                                {
+                                    var srcPath = $"https://image.tmdb.org/t/p/w500{movie.PosterPath}";
+
+                                    <img src="@srcPath" 
+                                         class="card-img-top" 
+                                         alt="@movie.Title poster"
+                                         style="height: 400px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                                        <i class="fas fa-film fa-3x text-muted"></i>
+                                    </div>
+                                }
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@movie.Title</h5>
+                                    <p class="card-text flex-grow-1">
+                                        @(string.IsNullOrEmpty(movie.Overview) ? "No description available." : 
+                                          movie.Overview.Length > 150 ? movie.Overview.Substring(0, 150) + "..." : movie.Overview)
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar"></i>
+                                                @{
+                                                    // Fix: Movie.ReleaseDate is a string, so parse it to DateTime before formatting
+                                                    DateTime? releaseDate = null;
+                                                    if (!string.IsNullOrWhiteSpace(movie.ReleaseDate) &&
+                                                        DateTime.TryParse(movie.ReleaseDate, out var parsedDate))
+                                                    {
+                                                        releaseDate = parsedDate;
+                                                    }
+                                                }
+                                                @if (releaseDate.HasValue)
+                                                {
+                                                    @releaseDate.Value.ToString("MMM dd, yyyy")
+                                                }
+                                                else
+                                                {
+                                                    @movie.ReleaseDate
+                                                }
+                                            </small>
+                                            <div class="badge bg-primary rounded-pill">
+                                                <i class="fas fa-star"></i> @movie.ImdbId
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                @if (apiResponse?.Messages?.Any(w => w.MessageType != ApiMessageType.Success) == true)
+                {
+                    <div class="mt-4">
+                        @foreach (var message in apiResponse.Messages)
+                        {
+                            var alertClass = message.MessageType switch
+                            {
+                                ApiMessageType.Success => "alert-success",
+                                ApiMessageType.Error => "alert-danger",
+                                ApiMessageType.Warning => "alert-warning",
+                                _ => "alert-info"
+                            };
+                            <div class="alert @alertClass alert-dismissible fade show" role="alert">
+                                @message.Message
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>🔒 Authentication Required</h4>
+                        </div>
+                        <div class="card-body text-center">
+                            <p>You need to be logged in to view now playing movies.</p>
+                            <a href="/login" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private List<Movie>? movies;
+    private ApiResponse? apiResponse;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMovies();
+    }
+
+    private async Task LoadMovies()
+    {
+        try
+        {
+            isLoading = true;
+            errorMessage = null;
+            StateHasChanged();
+
+            apiResponse = await MoviesApi.GetNowPlayingMoviesAsync();
+            
+            if (apiResponse?.Data != null)
+            {
+                // The API returns JsonElement, so we need to deserialize it to our Movie objects
+                var jsonString = apiResponse.Data.ToString();
+                movies = JsonSerializer.Deserialize<List<Movie>>(jsonString, new JsonSerializerOptions 
+                { 
+                    PropertyNameCaseInsensitive = true 
+                });
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            errorMessage = $"Failed to load movies: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An unexpected error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

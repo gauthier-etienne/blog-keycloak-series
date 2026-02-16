@@ -1,0 +1,43 @@
+﻿@using blog_keycloak_series.Web.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserService UserService
+@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4 navbar navbar-dark bg-primary">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <AuthorizeView>
+                    <Authorized>
+                        <!-- Left side -->
+                        <div>
+                            <span class="navbar-text">
+                                Welcome, @context.User.FindFirst(ClaimTypes.GivenName)?.Value
+                            </span>
+                        </div>
+                        <!-- Right side -->
+                        <div>
+                            <form method="post" action="/Account/logout">
+                                <button type="submit" class="btn btn-link navbar-link text-white">Logout</button>
+                            </form>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="ms-auto">
+                            <a href="/Account/login" class="btn btn-link navbar-link text-white">Login</a>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

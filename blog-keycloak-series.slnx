@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="blog-keycloak-series.ApiService/blog-keycloak-series.ApiService.csproj" />
+  <Project Path="blog-keycloak-series.AppHost/blog-keycloak-series.AppHost.csproj" />
+  <Project Path="blog-keycloak-series.Domain/blog-keycloak-series.Domain.csproj" />
+  <Project Path="blog-keycloak-series.ServiceDefaults/blog-keycloak-series.ServiceDefaults.csproj" />
+  <Project Path="blog-keycloak-series.Web/blog-keycloak-series.Web.csproj" />
+</Solution>
