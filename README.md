@@ -10,7 +10,7 @@ This repository serves as the companion code for a multi-part blog series that t
 
 | Part | Topic | Status | README | Blog Post |
 |------|-------|--------|--------|--------|
-| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Complete | [README-Part1.md](README-Part1.md) | [Part 1](https://etiennegauthier.blog/part1)
+| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Complete | [README-Part1.md](README-Part1.md) | [Part 1](https://www.etiennegauthier.blog/post/getting-started-with-keycloak-an-introductory-guide-for-aspire-and-blazor-server)
 | **Part 2** | Social Login (Google & GitHub) | 🔜 Coming Soon | - | - |
 | **Part 3** | Securing APIs with Bearer Tokens | 📋 Planned | - | - |
 | **Part 4** | Role-Based Access Control (RBAC) | 📋 Planned | - | - |
