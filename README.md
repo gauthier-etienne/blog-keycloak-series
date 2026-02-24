@@ -10,9 +10,9 @@ This repository serves as the companion code for a multi-part blog series that t
 
 | Part | Topic | Status | README | Blog Post |
 |------|-------|--------|--------|--------|
-| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Posted | [README-Part1.md](README-Part1.md) | [Part 1](https://www.etiennegauthier.blog/post/getting-started-with-keycloak-an-introductory-guide-for-aspire-and-blazor-server)
-| **Part 2** | Social Login (Google & GitHub) | 🔜 Coming Soon | - | - |
-| **Part 3** | Securing APIs with Bearer Tokens | 📋 Planned | - | - |
+| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Posted | [README-Part1.md](README-Part1.md) | [Part 1](https://tinyurl.com/kcblgseries1)
+| **Part 2** | Social Login (Google & GitHub) | ✅ Posted | [README-Part2.md](README-Part2.md) | [Part 2](https://tinyurl.com/kcblgseries2) |
+| **Part 3** | Securing APIs with Bearer Tokens | 🔜 Coming Soon | - | - |
 | **Part 4** | Role-Based Access Control (RBAC) | 📋 Planned | - | - |
 | **Part 5** | Token Management & Refresh Strategies | 📋 Planned | - | - |
 | **Part 6** | Multi-Tenancy with Keycloak Realms | 📋 Planned | - | - |
