@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+using System.Security.Claims;
+using System.Text.Json;
 using Asp.Versioning.Builder;
 using blog_keycloak_series.Domain.Model;
 using blog_keycloak_series.Domain.Model.Api;
@@ -15,7 +16,7 @@ public static class GetUpcomingMoviesEndpoint
     public static IEndpointRouteBuilder MapGetUpcomingMoviesEndpoint(this IEndpointRouteBuilder app, ApiVersionSet versionSet)
     {
         app.MapGet(ApiEndpoints.Movies.Upcoming, async Task<Results<Ok<ApiResponse>, BadRequest<List<string>>>>
-        ([FromServices] HybridCache cache, [FromServices] IHttpClientFactory httpClientFactory, CancellationToken token) =>
+        ([FromServices] HybridCache cache, [FromServices] IHttpClientFactory httpClientFactory, ClaimsPrincipal user, CancellationToken token) =>
         {
             //var options = new RestClientOptions("https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1");
             var httpClient = httpClientFactory.CreateClient("TMDB");
@@ -27,7 +28,6 @@ public static class GetUpcomingMoviesEndpoint
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var data = JsonSerializer.Deserialize<TmdbMovieResponse>(stringResponse, options);
-
             var results = data?.Results;
 
             return TypedResults.Ok(new ApiResponse(
@@ -41,10 +41,11 @@ public static class GetUpcomingMoviesEndpoint
         .WithName(Name)
         .WithApiVersionSet(versionSet)
         .HasApiVersion(1.0)
+        .RequireAuthorization("MovieUser")
         .Produces<ApiResponse>()
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status403Forbidden)
         .Produces(StatusCodes.Status404NotFound)
-        // .WithOpenApi()
-        // .WithDescription(File.ReadAllText($@"{Path.Combine(Directory.GetCurrentDirectory(), ApiEndpoints.Clients.Documentation)}"))
         .WithTags(ApiEndpoints.Movies.Tag);
 
         return app;

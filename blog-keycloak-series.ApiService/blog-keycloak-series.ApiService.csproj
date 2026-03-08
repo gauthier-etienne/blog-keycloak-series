@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
-        <PackageReference Include="Aspire.Keycloak.Authentication" Version="13.1.0-preview.1.25616.3" />
+        <PackageReference Include="Aspire.Keycloak.Authentication" Version="13.1.1-preview.1.26105.8" />
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.1.1" />
         <PackageReference Include="Aspire.StackExchange.Redis" Version="13.1.1" />
         <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="13.1.1" />
