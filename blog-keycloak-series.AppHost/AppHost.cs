@@ -11,6 +11,7 @@ var cache = builder
 var apiService = builder
     .AddProject<Projects.blog_keycloak_series_ApiService>("apiservice")
     .WithHttpHealthCheck("/health")
+    .WithExternalHttpEndpoints()
     .WithReference(keycloak)
     .WithReference(cache)
     .WaitFor(keycloak)

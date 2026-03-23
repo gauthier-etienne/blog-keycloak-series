@@ -8,16 +8,16 @@ This repository serves as the companion code for a multi-part blog series that t
 
 ## 📚 Series Overview
 
-| Part | Topic | Status | README | Blog Post |
-|------|-------|--------|--------|--------|
-| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Posted | [README-Part1.md](README-Part1.md) | [Part 1](https://tinyurl.com/kcblgseries1)
+| Part | Topic | Status | README                             | Blog Post                                  |
+|------|-------|--------|------------------------------------|--------------------------------------------|
+| **Part 1** | Project Setup & Basic OIDC Authentication | ✅ Posted | [README-Part1.md](README-Part1.md) | [Part 1](https://tinyurl.com/kcblgseries1) 
 | **Part 2** | Social Login (Google & GitHub) | ✅ Posted | [README-Part2.md](README-Part2.md) | [Part 2](https://tinyurl.com/kcblgseries2) |
-| **Part 3** | Securing APIs with Bearer Tokens | 🔜 Coming Soon | - | - |
-| **Part 4** | Role-Based Access Control (RBAC) | 📋 Planned | - | - |
-| **Part 5** | Token Management & Refresh Strategies | 📋 Planned | - | - |
-| **Part 6** | Multi-Tenancy with Keycloak Realms | 📋 Planned | - | - |
-| **Part 7** | Custom Themes & Branding | 📋 Planned | - | - |
-| **Part 8** | Production Deployment & Best Practices | 📋 Planned | - | - |
+| **Part 3** | Securing APIs with Bearer Tokens | ✅ Posted | [README-Part3.md](README-Part3.md) | [Part 3](https://tinyurl.com/kcblgseries3) |
+| **Part 4** | Role-Based Access Control (RBAC) | 🔜 Coming Soon | -                                  | -                                          |
+| **Part 5** | Token Management & Refresh Strategies | 📋 Planned | -                                  | -                                          |
+| **Part 6** | Multi-Tenancy with Keycloak Realms | 📋 Planned | -                                  | -                                          |
+| **Part 7** | Custom Themes & Branding | 📋 Planned | -                                  | -                                          |
+| **Part 8** | Production Deployment & Best Practices | 📋 Planned | -                                  | -                                          |
 
 ## 🛠️ Tech Stack
 
