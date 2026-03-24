@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Asp.Versioning.Builder;
 using blog_keycloak_series.Domain.Model;
 using blog_keycloak_series.Domain.Model.Api;
@@ -41,10 +41,11 @@ public static class GetPopularMoviesEndpoint
         .WithName(Name)
         .WithApiVersionSet(versionSet)
         .HasApiVersion(1.0)
+        .RequireAuthorization("MovieUser")
         .Produces<ApiResponse>()
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status403Forbidden)
         .Produces(StatusCodes.Status404NotFound)
-        // .WithOpenApi()
-        // .WithDescription(File.ReadAllText($@"{Path.Combine(Directory.GetCurrentDirectory(), ApiEndpoints.Clients.Documentation)}"))
         .WithTags(ApiEndpoints.Movies.Tag);
 
         return app;

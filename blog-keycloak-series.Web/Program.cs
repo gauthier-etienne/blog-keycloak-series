@@ -48,6 +48,7 @@ builder.Services
         options.Scope.Add("openid");
         options.Scope.Add("profile");
         options.Scope.Add("email");
+        options.Scope.Add("movielibrary_api.all");
 
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
